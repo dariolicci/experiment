@@ -54,7 +54,7 @@ class UserDaoTest {
                 .put("password", "maxdata")
                 .put("domainClasses", "it.dl.experiment.neo4j.model")
         ).getSession();
-        String json = "{'name': 'Test5', 'email': 'test@test.it','roles':[{'role':{'id': 7}}]}".replaceAll("'", "\"");
+        String json = "{'id':1, 'name': 'Test5', 'email': 'test@test.it','roles':[{'role':{'name': 'Admin'}}]}".replaceAll("'", "\"");
         User user = new JsonObject(json).mapTo(User.class);
         // nella relazione setto lo startnode altrimenti mi restituisce un errore
         user.setRoles(
