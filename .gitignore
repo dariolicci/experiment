@@ -1,0 +1,9 @@
+.classpath
+.project
+/*.log.*
+/*.log
+.vscode/
+.settings/
+.vertx/
+.svn/
+target/
