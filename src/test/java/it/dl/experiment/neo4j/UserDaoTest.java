@@ -24,7 +24,7 @@ class UserDaoTest {
             new JsonObject()
                 .put("uri", "http://localhost:7474")
                 .put("user", "neo4j")
-                .put("password", "maxdata")
+                .put("password", "password")
                 .put("domainClasses", "it.dl.experiment.neo4j.model")
         ).getSession();
         String json = "{'name': 'Test5','roles':[{'role':{'name': 'Admin'}}]}".replaceAll("'", "\"");
