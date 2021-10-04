@@ -24,10 +24,37 @@ class UserDaoTest {
             new JsonObject()
                 .put("uri", "http://localhost:7474")
                 .put("user", "neo4j")
-                .put("password", "password")
+                .put("password", "maxdata")
                 .put("domainClasses", "it.dl.experiment.neo4j.model")
         ).getSession();
-        String json = "{'name': 'Test5','roles':[{'role':{'name': 'Admin'}}]}".replaceAll("'", "\"");
+        String json = "{'name': 'Test1','roles':[{'role':{'name': 'Admin'}}]}".replaceAll("'", "\"");
+        User user = new JsonObject(json).mapTo(User.class);
+        // nella relazione setto lo startnode altrimenti mi restituisce un errore
+        user.setRoles(
+            Optional.ofNullable(user.getRoles()).orElse(new ArrayList<>())
+                .stream()
+                .map(hasrole -> { 
+                    hasrole.setUser(user); 
+                    if (hasrole.getCreated()==null) hasrole.setCreated(new Date());
+                    return hasrole;
+                })
+                .collect(Collectors.toList())
+            );        
+        session.save(user, 1);
+        System.out.println(JsonObject.mapFrom(user));
+        assertEquals(true, user.getId()!=null);
+    }
+
+    @Test
+    void createUserToExistsRole() {
+        Session session = Neo4jSessionFactory.createInstance(
+            new JsonObject()
+                .put("uri", "http://localhost:7474")
+                .put("user", "neo4j")
+                .put("password", "maxdata")
+                .put("domainClasses", "it.dl.experiment.neo4j.model")
+        ).getSession();
+        String json = "{'name':'Test11','roles':[{'role':{'id':2}}]}".replaceAll("'", "\"");
         User user = new JsonObject(json).mapTo(User.class);
         // nella relazione setto lo startnode altrimenti mi restituisce un errore
         user.setRoles(
@@ -54,7 +81,7 @@ class UserDaoTest {
                 .put("password", "maxdata")
                 .put("domainClasses", "it.dl.experiment.neo4j.model")
         ).getSession();
-        String json = "{'id':1, 'name': 'Test5', 'email': 'test@test.it','roles':[{'role':{'name': 'Admin'}}]}".replaceAll("'", "\"");
+        String json = "{'id':1,'version':0,'name':'Test5','email':'dario.licci@gmail.com','roles':[{'role':{'id':0}}]}".replaceAll("'", "\"");
         User user = new JsonObject(json).mapTo(User.class);
         // nella relazione setto lo startnode altrimenti mi restituisce un errore
         user.setRoles(
